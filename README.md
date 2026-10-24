@@ -1,91 +1,67 @@
-<p align="center">
-  <img src="https://i.imgur.com/oZerwzB.png" alt="ezVisualz" />
-</p>
+# @rbxts/ezvisualz
 
----
+[roblox-ts](https://roblox-ts.com) typings for **ezVisualz** (EasyVisuals), the Luau library by
+[Arxk](https://github.com/arxkdev) that animates Roblox UI with `UIGradient`, `UIStroke` and drop
+shadow presets: Rainbow, Gold, Chrome, Galaxy, Ghost, Shine and more.
 
-Quick example on how to use:
-```lua
-local EasyVisuals = require(path.to.EasyVisuals)
+The Luau code in `lib/EasyVisuals` is the original library, unchanged (this repository is a clone
+of [arxkdev/ezvisualz](https://github.com/arxkdev/ezvisualz) with its history). This package only
+adds `lib/EasyVisuals/index.d.ts` and a `package.json`, so the library installs with npm and is
+typed in roblox-ts. All credit for the effects goes to Arxk.
 
--- uiInstance: GuiObject, effectType: string, speed: number?, size: number?, saveInstanceObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?
+## Install
 
--- uiInstance: the object to apply the effect to
--- effectType: the preset to apply
--- speed: the speed of the effect
--- size: the size of the effect
--- saveInstanceObjects: you can keep your own strokes and gradients in your instance by setting this to true, this module will delete them but it will save them and reapply them if :Destroy() is called, default is false
--- customColor: the color of the effect (if needed)
--- customTransparency: the transparency of the effect (if needed)
--- resumesOnVisible: Because of obvious reasons, when an effect is not being shown, it is paused. This boolean decides whether to resume the effect when the uiInstance is shown (if not provided, it will resume on visible)
-
--- Initializing an effect on an object
-local Label = workspace.Label
-local Effect = EasyVisuals.new(Label, "RainbowStroke", 0.3, 6)
-
--- Destroying the Effect
-Effect:Destroy()
+```sh
+npm install github:MysticSaba-max/rbxts-ezvisualz
 ```
 
-## How to use the Gradient class
-```lua
-local EasyVisuals = require(path.to.EasyVisuals)
-local Gradient = EasyVisuals.Gradient.new(instance, color, transparency);
--- Then we can use the gradient to apply it to an object
-Gradient:SetOffsetSpeed(number)
-Gradient:SetTransparencyOffsetSpeed(number)
-Gradient:SetColor(color)
-Gradient:SetTransparencySequence(number or NumberSequence, acceleration)
-Gradient:SetRotation(number, acceleration)
-Gradient:SetRotationSpeed(number, acceleration)
+It lands in `node_modules/@rbxts/ezvisualz`, which the usual roblox-ts Rojo project already syncs.
+
+## Use
+
+```ts
+import EasyVisuals from "@rbxts/ezvisualz";
+
+// A preset on any GuiObject: name, speed, size (stroke thickness for the *Stroke presets).
+const effect = EasyVisuals.new(label, "RainbowStroke", 0.3, 6);
+effect.Pause();
+effect.Resume();
+effect.Destroy();
+
+// Keep your own UIStroke and UIGradient: they are taken off, then put back on Destroy.
+EasyVisuals.new(label, "Gold", 0.5, 1, true);
+
+// The building blocks.
+const gradient = EasyVisuals.Gradient.new(label, EasyVisuals.Templates.Rainbow.Color, 0);
+gradient.SetOffsetSpeed(0.5, 1);
+const stroke = EasyVisuals.Stroke.new(label, 3, Color3.fromRGB(0, 0, 0));
+stroke.SetSize(5, 0.1);
 ```
 
-## How to use the Stroke class
-```lua
-local EasyVisuals = require(path.to.EasyVisuals)
-local Stroke = EasyVisuals.Stroke.new(instance, size);
--- Then we can use the stroke to apply it to an object
-local StrokeGradient = EasyVisuals.Gradient.new(Stroke.Instance, color, transparency);
-StrokeGradient:SetOffsetSpeed(number)
-StrokeGradient:SetTransparencyOffsetSpeed(number)
-StrokeGradient:SetTransparency(number, acceleration)
-StrokeGradient:SetSize(number, acceleration)
-StrokeGradient:SetColor(color, acceleration)
+Effects pause on their own while their element (or an ancestor ScreenGui, BillboardGui or
+SurfaceGui) is hidden, and destroy themselves when the element leaves the game.
+
+Presets: `Bubblegum`, `ChromeStroke`, `DeathStroke`, `ElectricStroke`, `FireStroke`,
+`GalaxyStroke`, `Ghost`, `GhostStroke`, `Gold`, `GoldStroke`, `GreenOutline`, `IceStroke`, `Lava`,
+`LavaStroke`, `Matrix`, `NeonStroke`, `OceanicStroke`, `Rainbow`, `RainbowOutline`,
+`RainbowStroke`, `Shine`, `ShineOutline`, `Silver`, `SilverStroke`, `SunsetStroke`, `WaveStroke`,
+`Zebra`. Your own presets and templates: `EasyVisuals.SetCustomFolders(presets, templates)`, see
+[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md).
+
+The original Luau documentation is in [README.luau.md](README.luau.md). Upstream's Rojo test
+project is kept as `dev.project.json`, so it does not take over the package when Rojo syncs
+`node_modules`.
+
+## Updating from upstream
+
+```sh
+git remote add upstream https://github.com/arxkdev/ezvisualz.git
+git pull upstream main
 ```
 
-# Presets
-- RainbowStroke (Applies rainbow and stroke effect)
-- Rainbow (Applies rainbow effect)
-- Bubblegum (Applies bubblegum effect)
-- ChromeStroke (Applies chrome and stroke effect)
-- Ghost (Applies ghost effect)
-- GhostStroke (Applies ghost and stroke effect)
-- Gold (Applies gold effect)
-- GoldStroke (Applies gold and stroke effect)
-- Lava (Applies lava effect)
-- LavaStroke (Applies lava and stroke effect)
-- OceanicStroke (Applies oceanic and stroke effect)
-- Silver (Applies silver effect)
-- SilverStroke (Applies silver and stroke effect)
-- Zebra (Applies zebra effect)
-- ShineOutline (Applies a shine outline effect)
-- NeonStroke, GalaxyStroke, ElectricStroke, SunsetStroke
-- More to come...
+Then check `index.d.ts` against the new presets and signatures, and bump `version` to match
+upstream's `lib/EasyVisuals/wally.toml`.
 
-## Custom Presets and Templates
+## License
 
-You can add your own custom presets and templates without forking the module! Simply create your own `Presets` and `GradientTemplates` folders with ModuleScripts following the same structure as the built-in ones, then hook them up:
-
-```lua
-local EasyVisuals = require(path.to.EasyVisuals)
-
--- Hook up your custom folders (custom presets/templates override defaults with the same name)
-EasyVisuals.SetCustomFolders(YourPresetsFolder, YourGradientTemplatesFolder)
-
--- Now use your custom presets just like built-in ones!
-local effect = EasyVisuals.new(textLabel, "YourCustomPreset", 0.5, 3)
-```
-
-**Template Structure:** ModuleScripts in your GradientTemplates folder must return a function that returns a UIGradient instance.
-
-**Preset Structure:** ModuleScripts in your Presets folder must return a function(uiInstance, speed, size, customColor, customTransparency) that returns a table with `Effects` and optionally `Connections`.
+MIT, as the original library: see [LICENSE.md](LICENSE.md).

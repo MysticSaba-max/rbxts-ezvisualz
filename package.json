@@ -1,0 +1,32 @@
+{
+	"name": "@rbxts/ezvisualz",
+	"version": "1.2.0",
+	"description": "roblox-ts typings for ezVisualz (EasyVisuals) by Arxk: animated UIGradient, UIStroke and drop shadow presets for Roblox UI.",
+	"main": "lib/EasyVisuals/init.luau",
+	"types": "lib/EasyVisuals/index.d.ts",
+	"files": [
+		"lib/EasyVisuals/**/*.luau",
+		"lib/EasyVisuals/index.d.ts",
+		"LICENSE.md",
+		"README.md"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MysticSaba-max/rbxts-ezvisualz.git"
+	},
+	"homepage": "https://github.com/MysticSaba-max/rbxts-ezvisualz#readme",
+	"bugs": {
+		"url": "https://github.com/MysticSaba-max/rbxts-ezvisualz/issues"
+	},
+	"keywords": [
+		"roblox",
+		"roblox-ts",
+		"rbxts",
+		"ui",
+		"uigradient",
+		"uistroke",
+		"text-effects"
+	],
+	"author": "Arxk (ezVisualz, Luau); roblox-ts typings by MysticSaba-max",
+	"license": "MIT"
+}

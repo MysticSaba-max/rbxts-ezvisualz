@@ -1,6 +1,7 @@
 MIT License
 
 Copyright (c) 2026 Arxk
+Copyright (c) 2026 MysticSaba-max (roblox-ts typings and packaging)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
